@@ -1,7 +1,19 @@
 package mc;
 
-public class BatePapo extends javax.swing.JFrame {
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.DatagramPacket;
+import java.net.InetAddress;
+import java.net.MulticastSocket;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JTextField;
 
+public class BatePapo extends javax.swing.JFrame {
+    private static String usuario = null;
+    private static InetAddress end;
+    private static int port;
     /**
      * Creates new form BatePapo
      */
@@ -35,6 +47,12 @@ public class BatePapo extends javax.swing.JFrame {
             }
         });
 
+        TfPorta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TfPortaActionPerformed(evt);
+            }
+        });
+
         jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         jLabel1.setText("Endereco");
 
@@ -43,6 +61,11 @@ public class BatePapo extends javax.swing.JFrame {
 
         BtConectar.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         BtConectar.setText("Conectar");
+        BtConectar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtConectarActionPerformed(evt);
+            }
+        });
 
         TaTexto.setColumns(20);
         TaTexto.setRows(5);
@@ -100,7 +123,61 @@ public class BatePapo extends javax.swing.JFrame {
 
     private void TfEnderecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TfEnderecoActionPerformed
         // TODO add your handling code here:
+        
+        
     }//GEN-LAST:event_TfEnderecoActionPerformed
+
+    private void TfPortaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TfPortaActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_TfPortaActionPerformed
+
+    private void BtConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtConectarActionPerformed
+        try {
+            // TODO add your handling code here:
+            
+            String line;
+    
+            end = InetAddress.getByName(TfEndereco.getText());
+            port = Integer.parseInt(TfPorta.getText());
+            
+            // Bpapo batePapo = new Bpapo(end, port);
+            //batePapo.start();
+            
+            TaTexto.setText("Digite o seu nome: ");
+            TaTexto.setEditable(true);
+            usuario = TaTexto.getText();
+         
+//            MulticastSocket socket = new MulticastSocket();
+//            socket.joinGroup(end);
+//            
+//            byte[] msg = new byte[128];
+//            
+//            while(true) {
+//                
+//                TaTexto.setText("Digite a mensagem: ");
+//                String mensagem = TaTexto.getText();
+//                
+//                if(mensagem.equals("sair")) {
+//                    System.exit(0);
+//                }
+//                
+//                mensagem = usuario + " diz: " + mensagem;
+//                
+//                msg = mensagem.getBytes();
+//                
+//                DatagramPacket dgPacket = new 
+//                        DatagramPacket(msg, msg.length, end, port);
+//                
+//                socket.send(dgPacket);
+//            } 
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(BatePapo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }//GEN-LAST:event_BtConectarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -128,11 +205,16 @@ public class BatePapo extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(BatePapo.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         /* Create and display the form */
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new BatePapo().setVisible(true);
+                
+            
+                
+                
+                
             }
         });
     }
