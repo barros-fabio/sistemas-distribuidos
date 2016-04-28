@@ -5,17 +5,20 @@ import java.io.InputStreamReader;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import javax.swing.JTextArea;
 
 public class Bpapo extends Thread {
     
-    //private static String usuario;
-    private static InetAddress endereco;
-    private static int porta;
+    private String usuario;
+    private InetAddress endereco;
+    private int porta;
+    private JTextArea TaTexto;
     
-    
-    public Bpapo(InetAddress endereco, int porta){
+    public Bpapo(InetAddress endereco, int porta, JTextArea TaTexto, String usuario){
         this.endereco = endereco;
         this.porta = porta;
+        this.TaTexto = TaTexto;
+        this.usuario = usuario;
     }
     
     public Bpapo(){
@@ -38,13 +41,11 @@ public class Bpapo extends Thread {
                 DatagramPacket dgPacket = new DatagramPacket(msg, msg.length);
                 
                 socket.receive(dgPacket);
-                
                 String mensagem = new String(dgPacket.getData());
                 
-//                if(!mensagem.contains(usuario)) {
-//                    System.out.println("\n" + mensagem + "\n");
-//                    System.out.print("Digite a mensagem: ");
-//                }
+                TaTexto.append(mensagem +"\n");
+                TaTexto.append("Digite a mensagem: \n");
+                    
                 
                 msg = new byte[128];
                 
