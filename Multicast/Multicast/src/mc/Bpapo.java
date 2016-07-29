@@ -5,12 +5,25 @@ import java.io.InputStreamReader;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
+import javax.swing.JTextArea;
 
 public class Bpapo extends Thread {
     
-    private static String usuario = null;
-    private static InetAddress endereco;
-    private static int porta;
+    private String usuario;
+    private InetAddress endereco;
+    private int porta;
+    private JTextArea TaTexto;
+    
+    public Bpapo(InetAddress endereco, int porta, JTextArea TaTexto, String usuario){
+        this.endereco = endereco;
+        this.porta = porta;
+        this.TaTexto = TaTexto;
+        this.usuario = usuario;
+    }
+    
+    public Bpapo(){
+        
+    }
     
     @Override
     public void run() {
@@ -28,69 +41,15 @@ public class Bpapo extends Thread {
                 DatagramPacket dgPacket = new DatagramPacket(msg, msg.length);
                 
                 socket.receive(dgPacket);
-                
                 String mensagem = new String(dgPacket.getData());
                 
-                if(!mensagem.contains(usuario)) {
-                    System.out.println("\n" + mensagem + "\n");
-                    System.out.print("Digite a mensagem: ");
-                }
+                TaTexto.append(mensagem +"\n");
+                TaTexto.append("Digite a mensagem: \n");
+                    
                 
                 msg = new byte[128];
                 
             }
-            
-        } catch(Exception e) {
-            
-        }
-        
-    }
-    
-    public static void main(String[] args) {
-        
-        if(args.length != 2) {
-            System.out.println("Parametros estão incorretos!\n java BatePapo <endereco_multicast> <porta>");
-            System.exit(1);
-        }
-        
-        try {
-            
-            porta = Integer.parseInt(args[1]);
-            endereco = InetAddress.getByName(args[0]);
-            
-            Bpapo bp = new Bpapo();
-            bp.start();
-            
-            BufferedReader br = new 
-                BufferedReader(new InputStreamReader(System.in));
-            
-            System.out.print("Digite o seu nome: ");
-            usuario = br.readLine();
-            
-            MulticastSocket socket = new MulticastSocket();
-            socket.joinGroup(endereco);
-            
-            byte[] msg = new byte[128];
-            
-            while(true) {
-                
-                System.out.print("Digite a mensagem: ");
-                String mensagem = br.readLine();
-                
-                if(mensagem.equals("sair")) {
-                    System.exit(0);
-                }
-                
-                mensagem = usuario + " diz: " + mensagem;
-                
-                msg = mensagem.getBytes();
-                
-                DatagramPacket dgPacket = new 
-                        DatagramPacket(msg, msg.length, endereco, porta);
-                
-                socket.send(dgPacket);
-            }            
-            
             
         } catch(Exception e) {
             e.printStackTrace();
